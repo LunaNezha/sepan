@@ -15,8 +15,9 @@ i18next
     detection: { order: ["localStorage"], caches: ["localStorage"] },
     defaultNS: "translations",
     backend: {
-      loadPath: "/locales/{{lng}}/translations.json",
+      loadPath: `${import.meta.env.BASE_URL}locales/{{lng}}/{{ns}}.json`,
     },
+    react: { useSuspense: true },
     interpolation: {
       escapeValue: false,
     },

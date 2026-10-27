@@ -161,7 +161,7 @@ const AppRoutes = () => {
 };
 const MainRouter = () => (
   <IonApp>
-    <IonReactRouter>
+    <IonReactRouter basename={import.meta.env.BASE_URL}>
       <AppRoutes />
     </IonReactRouter>
   </IonApp>

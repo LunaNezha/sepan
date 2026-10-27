@@ -20,7 +20,25 @@ const sourceDirectories = [
 
 export default defineConfig(({ mode }) => ({
   base: mode === "production" ? "/sepan/" : "/",
-  plugins: [react(), tailwindcss()],
+  plugins: [
+    react(),
+    tailwindcss(),
+    {
+      name: "github-pages-fallback",
+      enforce: "post",
+      generateBundle(_options, bundle) {
+        // GitHub Pages serves this app shell when a nested route is opened directly.
+        const index = bundle["index.html"];
+        if (index?.type === "asset") {
+          this.emitFile({
+            type: "asset",
+            fileName: "404.html",
+            source: index.source,
+          });
+        }
+      },
+    },
+  ],
   resolve: {
     alias: Object.fromEntries(
       sourceDirectories.map((directory) => [

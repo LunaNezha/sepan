@@ -152,7 +152,15 @@ The build runs TypeScript checks and creates the web application in `dist/`. To 
 npm run preview
 ```
 
-Serve `dist/` from your production web host and configure an SPA fallback to `index.html` so direct visits to application routes work. `vite preview` is intended for local inspection. A successful frontend build does not complete the production integrations described above.
+The production build uses `/sepan/` as its base. Open `http://localhost:4173/sepan/` when running `vite preview`. The router and translation loader both use Vite's `BASE_URL`; local development uses `/`. Route definitions and navigation targets remain relative to the app root (for example, `/pharmacy` becomes `/sepan/pharmacy`).
+
+The build also generates `dist/404.html` from the app shell so GitHub Pages can render direct visits and refreshes on nested routes. Deploy the entire `dist/` directory, including this fallback and `locales/`. Other web hosts should configure an SPA fallback to `index.html`. `vite preview` is intended for local inspection. A successful frontend build does not complete the production integrations described above.
+
+With the preview server running, verify subpath routing and translations with:
+
+```bash
+npm run test.e2e -- --config baseUrl=http://localhost:4173 --expose appBase=/sepan --spec cypress/e2e/deployment.cy.ts
+```
 
 ### Android and iOS
 

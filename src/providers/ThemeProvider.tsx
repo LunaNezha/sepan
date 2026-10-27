@@ -1,15 +1,14 @@
 import React, {
   ReactNode,
   createContext,
-  useContext,
-  useEffect,
+  useLayoutEffect,
   useState,
 } from "react";
-import { THEME } from "@constants/local-storage.const";
-import { DARK, LIGHT } from "@constants/theme.const";
-import secureLocalStorage from "react-secure-storage";
+import { THEME } from "@constants/storageKeys";
+import { DARK, LIGHT } from "@constants/theme";
+import secureLocalStorage from "@services/secureStorage";
 
-export type Theme = "light" | "dark";
+import type { Theme } from "@appTypes/theme";
 
 type ThemeContextProps = {
   theme: Theme;
@@ -29,22 +28,24 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({
   children,
   initialTheme,
 }) => {
-  const storedTheme =
-    (secureLocalStorage.getItem(THEME) as Theme) ||
-    (initialTheme as Theme) ||
-    DARK;
-  const [theme, setTheme] = useState<Theme>(storedTheme);
+  const [theme, setTheme] = useState<Theme>(initialTheme);
 
   const toggleTheme = () => {
     setTheme((current) => {
-      const newTheme = current === LIGHT ? DARK : LIGHT;
-      secureLocalStorage.setItem(THEME, newTheme);
-      return newTheme;
+      return current === LIGHT ? DARK : LIGHT;
     });
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    document.documentElement.classList.toggle("dark", theme === DARK);
     document.body.classList.toggle("dark", theme === DARK);
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute(
+        "content",
+        getComputedStyle(document.body).getPropertyValue("--care-bg").trim(),
+      );
+    secureLocalStorage.setItem(THEME, theme);
   }, [theme]);
 
   return (
@@ -54,13 +55,4 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({
   );
 };
 
-const useTheme = () => {
-  const context = useContext(ThemeContext);
-
-  if (!context) {
-    throw new Error("useTheme must be used within a ThemeProvider");
-  }
-  return context;
-};
-
-export { ThemeProvider, useTheme };
+export { ThemeProvider };

@@ -1,31 +1,26 @@
-import Input from "@components/Inputs";
+import Input from "@components/Input";
+import { Controller, useForm } from "react-hook-form";
 import {
-  Controller,
-  FieldErrors,
-  SubmitHandler,
-  useForm,
-} from "react-hook-form";
-import {
-  BirthDateValidation,
-  ConfirmPasswordValidation,
-  DiseaseTypeValidation,
-  FirstNameValidation,
-  GenderValidation,
-  LastNameValidation,
-  PasswordValidation,
-  PhoneNumberValidation,
-  PrivacyPolicyValidation,
-  UsernameValidation,
-} from "@constants/form-schemas.const";
+  useBirthDateValidation,
+  useConfirmPasswordValidation,
+  useDiseaseTypeValidation,
+  useFirstNameValidation,
+  useGenderValidation,
+  useLastNameValidation,
+  usePasswordValidation,
+  usePhoneNumberValidation,
+  usePrivacyPolicyValidation,
+  useUsernameValidation,
+} from "@hooks/useFormValidation";
 import { Trans, useTranslation } from "react-i18next";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import LocalizeDatePicker from "@components/DatePicker/Index";
-import { FA } from "@constants/langs.const";
+import LocalizeDatePicker from "@components/datePicker/DatePicker";
+import { FA } from "@constants/languages";
 import { useMaskito } from "@maskito/react";
-import options from "@constants/input-masks.const";
+import options from "@utils/phoneMask";
 import Select from "@components/Select";
-import { isWebView } from "@constants/platforms.const";
+import { isWebView } from "@utils/platform";
 import {
   IonCheckbox,
   IonSelectOption,
@@ -33,30 +28,32 @@ import {
   IonText,
 } from "@ionic/react";
 import React from "react";
-import { Button } from "@components/Buttons";
-import { PathNames } from "@constants/pathnames.const";
-import { useHistory } from "react-router";
+import { Button } from "@components/Button";
+import { PathNames } from "@constants/pathnames";
+import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
-import DiseaseTypes from "@constants/disease-type.const";
-import Genders from "@constants/genders.const";
+import useDiseaseTypes from "@hooks/useDiseaseTypes";
+import useGenders from "@hooks/useGenders";
 
 const Register = () => {
   type FormValues = z.infer<typeof RegisterFormSchema>;
 
   const { t, i18n } = useTranslation("translations");
-  const history = useHistory();
+  const navigate = useNavigate();
+  const genders = useGenders();
+  const diseaseTypes = useDiseaseTypes();
   const phoneNumberRef = useMaskito({ options });
   const RegisterFormSchema = z.object({
-    firstname: FirstNameValidation(),
-    lastname: LastNameValidation(),
-    birthDate: BirthDateValidation(),
-    username: UsernameValidation(),
-    password: PasswordValidation(),
-    confirmPassword: ConfirmPasswordValidation(),
-    phoneNumber: PhoneNumberValidation(),
-    gender: GenderValidation(),
-    diseaseType: DiseaseTypeValidation(),
-    privacyPolicy: PrivacyPolicyValidation(),
+    firstname: useFirstNameValidation(),
+    lastname: useLastNameValidation(),
+    birthDate: useBirthDateValidation(),
+    username: useUsernameValidation(),
+    password: usePasswordValidation(),
+    confirmPassword: useConfirmPasswordValidation(),
+    phoneNumber: usePhoneNumberValidation(),
+    gender: useGenderValidation(),
+    diseaseType: useDiseaseTypeValidation(),
+    privacyPolicy: usePrivacyPolicyValidation(),
   });
 
   const { control, register, handleSubmit, formState } = useForm<FormValues>({
@@ -64,18 +61,10 @@ const Register = () => {
   });
   const { errors, isSubmitting, isLoading } = formState;
 
-  const onSubmit: SubmitHandler<FormValues> = (res) => {
-    console.log(res);
-  };
-
-  const onError = (error: FieldErrors<FormValues>) => {
-    console.log(error);
-  };
-
   return (
     <form
       noValidate
-      onSubmit={handleSubmit(onSubmit, onError)}
+      onSubmit={handleSubmit(() => undefined)}
       className="flex flex-col gap-8"
     >
       {/* inputs */}
@@ -177,7 +166,7 @@ const Register = () => {
               alertTitle={t("alert_titles.gender")}
               errors={errors.gender?.message}
             >
-              {Genders().map((item, index) => (
+              {genders.map((item, index) => (
                 <React.Fragment key={index}>
                   <IonSelectOption value={item.value}>
                     {item.name}
@@ -202,7 +191,7 @@ const Register = () => {
               alertTitle={t("alert_titles.disease_type")}
               errors={errors.diseaseType?.message}
             >
-              {DiseaseTypes().map((item, index) => (
+              {diseaseTypes.map((item, index) => (
                 <React.Fragment key={index}>
                   <IonSelectOption value={item.value}>
                     {item.name}
@@ -220,7 +209,7 @@ const Register = () => {
 
         <div className="flex flex-col">
           {/* policy accept */}
-          <IonText className="font-iranyekan-regular text-sm leading-6 text-white-950 dark:text-white-200">
+          <IonText className="font-iranyekan-regular text-white-950 dark:text-white-200 text-sm leading-6">
             <Trans
               i18nKey="checkboxes.register_copyright"
               t={t}
@@ -258,7 +247,7 @@ const Register = () => {
       <div className="flex flex-wrap items-center justify-between">
         {/* back button */}
         <Button
-          onClick={() => history.push(PathNames.Auth.LoginFirstStep)}
+          onClick={() => navigate(PathNames.Auth.LoginFirstStep)}
           variant={"text-default"}
           size={"md"}
           round={"full"}

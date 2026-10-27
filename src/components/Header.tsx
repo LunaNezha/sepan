@@ -1,88 +1,89 @@
-import React, { lazy } from "react";
 import { IonButtons, IonHeader, IonMenuButton } from "@ionic/react";
-import { isWebView } from "@constants/platforms.const";
-import LightUser from "@assets/images/user-light.png";
-import DarkUser from "@assets/images/user-dark.png";
-import { Button } from "./Buttons";
-import { LIGHT } from "@constants/theme.const";
-import { useTheme } from "@providers/ThemeProvider";
-import { useAccount } from "@providers/AccountProvider";
-import { useAuth } from "@providers/AuthProvider";
+import { NavLink, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useTheme } from "@hooks/useTheme";
+import { CareIcon } from "@components/care/CareIcon";
 
-const ThemeSwitcher = lazy(() => import("@components/ThemeSwitcher"));
-const LanguageSwitcher = lazy(() => import("./LanguageSwitcher/Index"));
-
-const Header: React.FC = () => {
-  const { theme } = useTheme();
-  // const { setToken } = useAuth();
-  // const { accountData } = useAccount();
-
-  // const handleLogout = () => {
-  //   setToken(undefined);
-  // };
-
+const Header = () => {
+  const { t, i18n } = useTranslation("translations");
+  const { theme, toggleTheme } = useTheme();
+  const { pathname } = useLocation();
+  const staff = pathname.startsWith("/pharmacy");
   return (
-    <IonHeader class="border-0">
-      <div className="flex items-center justify-between bg-white-100 px-4 py-3 dark:bg-ebony-950 sm:p-4 md:px-6 md:py-5">
-        {/* right actions */}
-        <div className="flex gap-1">
-          {/* menu toggle button */}
-          <IonButtons slot="start">
-            <IonMenuButton class="text-white-950 dark:text-white-200" />
-          </IonButtons>
-
-          {/* user details */}
-          <div className="hidden items-center gap-3 sm:flex">
-            <img
-              className="h-9 w-9 rounded-full object-contain md:h-12 md:w-12"
-              alt="user avatar"
-              src={theme === LIGHT ? LightUser : DarkUser}
+    <IonHeader className="care-header">
+      <button
+        className="care-skip-link"
+        onClick={(event) =>
+          event.currentTarget
+            .closest(".ion-page")
+            ?.querySelector<HTMLElement>("main")
+            ?.focus()
+        }
+      >
+        {t("care.skip")}
+      </button>
+      <div className="care-header-inner">
+        <div className="flex min-w-0 items-center gap-2">
+          <IonButtons>
+            <IonMenuButton
+              aria-label={t("care.menu")}
+              className="care-menu-button"
             />
-            <div className="flex flex-col gap-1 text-white-950 dark:text-white-200">
-              <label className="font-iranyekan-bold text-sm">
-                {/* {accountData?.username} */}
-                مهدیه نژادحسینی
-              </label>
-              <small className="text-xs opacity-70">
-                {/* {accountData?.roles} */}
-                مدیریت
-              </small>
-            </div>
-          </div>
+          </IonButtons>
+          <nav className="care-workspaces" aria-label={t("care.workspace")}>
+            <NavLink
+              to="/"
+              end
+              className={!staff ? "is-selected" : ""}
+              aria-current={!staff ? "page" : undefined}
+            >
+              <span className="care-workspace-full">
+                {t("care.patientSpace")}
+              </span>
+              <span className="care-workspace-short">
+                {t("care.patientView")}
+              </span>
+            </NavLink>
+            <NavLink to="/pharmacy" className={staff ? "is-selected" : ""}>
+              <span className="care-workspace-full">
+                {t("care.pharmacySpace")}
+              </span>
+              <span className="care-workspace-short">
+                {t("care.pharmacyView")}
+              </span>
+            </NavLink>
+          </nav>
         </div>
-
-        {/* left actions */}
-        <div className="flex items-center gap-2">
-          {/* theme switcher */}
-          <ThemeSwitcher />
-
-          {/* language switcher */}
-          <LanguageSwitcher
-            platform={isWebView() ? { view: "web" } : { view: "mobile" }}
-          />
-
-          {/* notification */}
-          <Button
-            className="h-9 w-9 p-0"
-            variant={"filled-default"}
-            round={"full"}
+        <div className="care-header-actions">
+          <label className="care-language">
+            <CareIcon name="globe" />
+            <span className="care-sr-only">{t("care.language")}</span>
+            <select
+              aria-label={t("care.language")}
+              value={i18n.resolvedLanguage?.startsWith("fa") ? "fa" : "en"}
+              onChange={(event) => void i18n.changeLanguage(event.target.value)}
+            >
+              <option value="fa">فارسی</option>
+              <option value="en">English</option>
+            </select>
+          </label>
+          <button
+            type="button"
+            className="care-icon-button"
+            aria-label={t("care.theme")}
+            onClick={toggleTheme}
+            aria-pressed={theme === "dark"}
+            data-testid="theme-toggle"
           >
-            <i className="fi fi-rr-bell text-lg"></i>
-          </Button>
-
-          {/* logout */}
-          <Button
-            className="h-9 w-9 p-0"
-            variant={"filled-default"}
-            round={"full"}
-            // onClick={handleLogout}
-          >
-            <i className="fi fi-rr-power text-lg"></i>
-          </Button>
+            <CareIcon name={theme === "dark" ? "sun" : "moon"} />
+          </button>
         </div>
+      </div>
+      <div className="care-preview-banner">
+        <span>{t("care.preview")}</span>
+        <p>{t("care.previewNote")}</p>
       </div>
     </IonHeader>
   );
 };
-
 export default Header;

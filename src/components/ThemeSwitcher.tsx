@@ -1,8 +1,8 @@
 import { IonButton } from "@ionic/react";
 import React from "react";
-import classNames from "classnames";
-import { DARK, LIGHT } from "@constants/theme.const";
-import { useTheme } from "@providers/ThemeProvider";
+import classNames from "clsx";
+import { DARK, LIGHT } from "@constants/theme";
+import { useTheme } from "@hooks/useTheme";
 
 const themeButtons = [
   {
@@ -23,6 +23,7 @@ const ThemeSwitcher: React.FC = () => {
       {themeButtons.map((item) => (
         <IonButton
           key={item.name}
+          aria-label={`Switch theme (${item.name})`}
           className={classNames("btn theme-btn", {
             "hover:text-orange-300": theme === LIGHT,
             "hover:text-orange-400": theme === DARK,
@@ -34,7 +35,7 @@ const ThemeSwitcher: React.FC = () => {
       ))}
       <div
         className={classNames(
-          "absolute bottom-1 top-1 h-6 w-6 rounded-full bg-white-100 shadow-xl duration-300 ease-in dark:bg-ebony-950",
+          "pointer-events-none absolute bottom-1 top-1 h-6 w-6 rounded-full bg-white-100 shadow-xl duration-300 ease-in dark:bg-ebony-950",
           {
             "right-1 ml-8": theme === DARK,
             "left-1 mr-8": theme == LIGHT,

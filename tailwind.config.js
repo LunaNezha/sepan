@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-const plugin = require("tailwindcss/plugin");
+import plugin from "tailwindcss/plugin";
 
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
@@ -105,7 +105,7 @@ export default {
         700: "#2d60c8",
         800: "#2a4fa3",
         900: "#274481",
-        950: "#0f172a",
+        950: "var(--care-bg)",
       },
       "big-stone": {
         50: "#f1f7fd",
@@ -118,7 +118,7 @@ export default {
         700: "#3864bd",
         800: "#33529a",
         900: "#2e477a",
-        950: "#19233b",
+        950: "var(--care-surface)",
       },
       white: {
         50: "#ffffff",
@@ -136,38 +136,13 @@ export default {
     },
     extend: {
       fontFamily: {
-        "iranyekan-bold": ["iranyekan-bold", "sans-serif"],
-        "iranyekan-thin": ["iranyekan-thin", "sans-serif"],
-        "iranyekan-light": ["iranyekan-light", "sans-serif"],
-        "iranyekan-regular": ["iranyekan-regular", "sans-serif"],
-        "iranyekan-medium": ["iranyekan-medium", "sans-serif"],
-        "iranyekan-extrabold": ["iranyekan-extrabold", "sans-serif"],
-        "iranyekan-black": ["iranyekan-black", "sans-serif"],
-        "iranyekan-extrablack": ["iranyekan-extrablack", "sans-serif"],
-      },
-      boxShadow: {
-        "3xl": "0 4px 20px rgba(0, 0, 0, 10%)",
-        "tabbar-dark": "0px -8px 20px rgba(0, 0, 0, 15%)",
-        "tabbar-light": "0px -8px 20px rgba(0, 0, 0, 10%)",
-      },
-      maxWidth: {
-        auto: "auto",
-        14: "3.5rem",
-        992: "992px",
-      },
-      minWidth: {
-        auto: "auto",
-        14: "3.5rem",
-      },
-      flex: {
-        100: "1 1 100%",
+        sans: ["iranyekan", "Tahoma", "Arial", "sans-serif"],
+        serif: ["iranyekan", "Tahoma", "Arial", "sans-serif"],
+        mono: ["iranyekan", "Tahoma", "Arial", "sans-serif"],
+        iranyekan: ["iranyekan", "Tahoma", "Arial", "sans-serif"],
       },
       height: {
         1.25: "5px",
-        18: "4.5rem",
-      },
-      backgroundImage: {
-        "triangle-shape": "url('./src/assets/images/triangle-shape.png')",
       },
     },
     minHeight: {
@@ -177,35 +152,34 @@ export default {
   plugins: [
     plugin(function ({ addVariant }) {
       addVariant("partNative", "&::part(native)");
-      addVariant("partArrow", "&::part(arrow)");
-      addVariant("partBackground", "&::part(background)");
       addVariant("partText", "&::part(text)");
       addVariant("partContent", "&::part(content)");
       addVariant("partProgress", "&::part(progress)");
-      addVariant("partStream", "&::part(stream)");
       addVariant("partTrack", "&::part(track)");
       addVariant("partContainer", "&::part(container)");
-      addVariant("partScroll", "&::part(scroll)");
-      addVariant("partSeparator", "&::part(separator)");
       addVariant("partIcon", "&::part(icon)");
       addVariant("partPlaceholder", "&::part(placeholder)");
       addVariant("partMark", "&::part(mark)");
-      addVariant("partCollapsedIndicator", "&::part(collapsed-indicator)");
     }),
     plugin(function ({ addUtilities }) {
-      const newUtilities = {
-        ".no-scrollbar::-webkit-scrollbar": {
-          display: "none",
-          width: 0,
-        },
-        ".no-scrollbar": {
-          "-ms-overflow-style": "none",
-          "scrollbar-width": "none",
-          overflow: "-moz-scrollbars-none",
-        },
-      };
-
-      addUtilities(newUtilities);
+      // Preserve existing font utility names while using a single weighted family.
+      addUtilities(
+        Object.fromEntries(
+          Object.entries({
+            regular: 400,
+            medium: 500,
+            bold: 700,
+            extrabold: 800,
+            black: 850,
+          }).map(([name, weight]) => [
+            `.font-iranyekan-${name}`,
+            {
+              fontFamily: "var(--app-font-family)",
+              fontWeight: weight,
+            },
+          ]),
+        ),
+      );
     }),
   ],
 };

@@ -1,28 +1,26 @@
-import { DARK, LIGHT } from "@constants/theme.const";
+import { DARK } from "@constants/theme";
 import LightLogo from "@assets/images/logo.png";
 import DarkLogo from "@assets/images/logo-dark.png";
-import React, { lazy } from "react";
+import React from "react";
 import { IonContent, IonHeader, IonText } from "@ionic/react";
 import { useTranslation } from "react-i18next";
-import { isWebView } from "@constants/platforms.const";
-import { Button } from "@components/Buttons";
+import { isWebView } from "@utils/platform";
+import { Button } from "@components/Button";
 import { cn } from "@utils/classnames";
-import { useTheme } from "@providers/ThemeProvider";
+import { useTheme } from "@hooks/useTheme";
 
-const CirclePattern = lazy(() => import("@assets/images/circle-pattern"));
-const ThemeSwitcher = lazy(() => import("@components/ThemeSwitcher"));
-const LanguageSwitcher = lazy(
-  () => import("@components/LanguageSwitcher/Index"),
-);
+import CirclePattern from "@components/CirclePattern";
+import ThemeSwitcher from "@components/ThemeSwitcher";
+import LanguageSwitcher from "@components/languageSwitcher/LanguageSwitcher";
 
 type AuthDesignProps = {
   children: React.ReactNode;
   lightImage: string;
   darkImage: string;
   sidebarTitle: string;
-  className?: React.HTMLAttributes<HTMLElement> | string;
-  formClassName?: React.HTMLAttributes<HTMLElement> | string;
-  imageClassName?: React.HTMLAttributes<HTMLElement> | string;
+  className?: string;
+  formClassName?: string;
+  imageClassName?: string;
 };
 
 const AuthLayout = (props: AuthDesignProps) => {
@@ -36,7 +34,6 @@ const AuthLayout = (props: AuthDesignProps) => {
     children,
     imageClassName,
     formClassName,
-    ...rest
   } = props;
 
   return (
@@ -68,7 +65,7 @@ const AuthLayout = (props: AuthDesignProps) => {
           <div className="flex items-center justify-between gap-4 bg-white-100 p-4 dark:bg-ebony-950 sm:px-8 sm:py-6">
             <Button variant={"filled-default"} round={"full"} size={"sm"}>
               <i className="fi fi-rr-book"></i>
-              <IonText class="text-xs">{t("buttons.system_guide")}</IonText>
+              <IonText className="text-xs">{t("buttons.system_guide")}</IonText>
             </Button>
 
             <div className="flex items-center gap-2">

@@ -1,5 +1,5 @@
-import { Button } from "@components/Buttons";
-import Input from "@components/Inputs";
+import { Button } from "@components/Button";
+import Input from "@components/Input";
 import { IonSpinner, IonText } from "@ionic/react";
 import { useEffect } from "react";
 import { FieldErrors, SubmitHandler, useForm } from "react-hook-form";
@@ -7,23 +7,19 @@ import { useTranslation } from "react-i18next";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { enqueueSnackbar } from "notistack";
-import { useHistory } from "react-router-dom";
-import { PathNames } from "@constants/pathnames.const";
-import { UsernameValidation } from "@constants/form-schemas.const";
+import { useNavigate } from "react-router-dom";
+import { PathNames } from "@constants/pathnames";
+import { useUsernameValidation } from "@hooks/useFormValidation";
 
 const Username = () => {
   type FormValues = z.infer<typeof FormSchema>;
   const { t, i18n } = useTranslation("translations");
-  const history = useHistory();
-  const FormSchema = z.object({ username: UsernameValidation() });
+  const navigate = useNavigate();
+  const FormSchema = z.object({ username: useUsernameValidation() });
   const { register, handleSubmit, formState, reset } = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
   });
   const { errors, isSubmitting, isLoading, isSubmitSuccessful } = formState;
-
-  useEffect(() => {
-    document.title = t("titles.login");
-  }, []);
 
   useEffect(() => {
     if (isSubmitSuccessful) {
@@ -33,7 +29,7 @@ const Username = () => {
 
   const onSubmit: SubmitHandler<FormValues> = (res) => {
     reset();
-    history.push(`${PathNames.Auth.LoginSecondStep}?username=${res.username}`);
+    navigate(`${PathNames.Auth.LoginSecondStep}?username=${res.username}`);
   };
 
   const onError = (error: FieldErrors<FormValues>) => {

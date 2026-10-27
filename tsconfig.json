@@ -10,24 +10,17 @@
     ],
     "allowJs": false,
     "skipLibCheck": true,
-    "esModuleInterop": false,
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": "./",
     "paths": {
-      "@public/*": [
-        "./public/*"
-      ],
-      "@api/*": [
-        "./src/api/*"
-      ],
       "@assets/*": [
         "./src/assets/*"
       ],
@@ -37,8 +30,8 @@
       "@constants/*": [
         "./src/constants/*"
       ],
-      "@enums/*": [
-        "./src/enums/*"
+      "@hooks/*": [
+        "./src/hooks/*"
       ],
       "@layouts/*": [
         "./src/layouts/*"
@@ -52,17 +45,26 @@
       "@routes/*": [
         "./src/routes/*"
       ],
+      "@services/*": [
+        "./src/services/*"
+      ],
+      "@theme/*": [
+        "./src/theme/*"
+      ],
+      "@appTypes/*": [
+        "./src/types/*"
+      ],
       "@utils/*": [
         "./src/utils/*"
-      ],
-    }
+      ]
+    },
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "types": [
+      "vite/client"
+    ]
   },
   "include": [
     "src"
-  ],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    }
   ]
 }

@@ -1,45 +1,37 @@
 import {
-  NewPasswordValidation,
-  PasswordValidation,
-  UsernameValidation,
-} from "@constants/form-schemas.const";
-import { FieldErrors, SubmitHandler, useForm } from "react-hook-form";
+  useNewPasswordValidation,
+  usePasswordValidation,
+  useUsernameValidation,
+} from "@hooks/useFormValidation";
+import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import Input from "@components/Inputs";
+import Input from "@components/Input";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@components/Buttons";
+import { Button } from "@components/Button";
 import { IonSpinner, IonText } from "@ionic/react";
-import { useHistory } from "react-router";
-import { PathNames } from "@constants/pathnames.const";
+import { useNavigate } from "react-router";
+import { PathNames } from "@constants/pathnames";
 
 const ChangePhoneNumber = () => {
   type FormValues = z.infer<typeof FormSchema>;
-  
+
   const { t } = useTranslation("translations");
-  const history = useHistory();
+  const navigate = useNavigate();
   const FormSchema = z.object({
-    username: UsernameValidation(),
-    password: PasswordValidation(),
-    new_password: NewPasswordValidation(),
+    username: useUsernameValidation(),
+    password: usePasswordValidation(),
+    new_password: useNewPasswordValidation(),
   });
   const { register, handleSubmit, formState } = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
   });
   const { errors, isSubmitting, isLoading } = formState;
 
-  const onSubmit: SubmitHandler<FormValues> = (res) => {
-    console.log(res);
-  };
-
-  const onError = (error: FieldErrors<FormValues>) => {
-    console.log(error);
-  };
-
   return (
     <form
       noValidate
-      onSubmit={handleSubmit(onSubmit, onError)}
+      onSubmit={handleSubmit(() => undefined)}
       className="flex flex-col gap-8"
     >
       <div className="flex flex-col gap-4">
@@ -80,7 +72,7 @@ const ChangePhoneNumber = () => {
       <div className="flex flex-wrap items-center justify-between">
         {/* back button */}
         <Button
-          onClick={() => history.push(PathNames.Auth.LoginFirstStep)}
+          onClick={() => navigate(PathNames.Auth.LoginFirstStep)}
           variant={"text-default"}
           size={"md"}
           round={"full"}

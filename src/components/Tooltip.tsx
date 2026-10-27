@@ -1,5 +1,4 @@
-import { Positions } from "@enums/positions.enum";
-import PropTypes from "prop-types";
+import { Positions } from "@appTypes/positions";
 import { cn } from "@utils/classnames";
 import React from "react";
 
@@ -51,17 +50,6 @@ const Tooltip = ({ message, position, children, ...props }: Props) => {
       ></span>
     </div>
   );
-};
-
-Tooltip.prototype = {
-  position: PropTypes.oneOf([
-    Positions.Bottom,
-    Positions.Top,
-    Positions.Right,
-    Positions.Left,
-  ]).isRequired,
-  message: PropTypes.node.isRequired,
-  children: PropTypes.node.isRequired,
 };
 
 export default Tooltip;

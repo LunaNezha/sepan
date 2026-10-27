@@ -1,0 +1,382 @@
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/react/css/core.css";
+
+/* flaticon all package */
+@import "@flaticon/flaticon-uicons/css/regular/rounded.css";
+@import "@flaticon/flaticon-uicons/css/solid/rounded.css";
+
+/* font families */
+@import "@theme/fonts.css";
+
+@import "tailwindcss" important;
+@config "../../tailwind.config.js";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  /* theme variables */
+  :root {
+    --blue-400: theme(colors.blue.400);
+  }
+
+  body {
+    font-family: var(--app-font-family);
+  }
+
+  input {
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus,
+    &:-webkit-autofill:active,
+    &:-internal-autofill-selected {
+      box-shadow: 0 0 0 100px transparent inset;
+      @apply !bg-transparent !text-blue-600;
+    }
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    &[type="number"] {
+      -moz-appearance: textfield;
+    }
+  }
+
+  ion-list,
+  ion-item::part(native) {
+    background: var(--care-surface);
+    color: var(--care-text);
+  }
+
+  ion-menu {
+    ion-content {
+      &::part(background) {
+        @apply bg-white-50 dark:bg-big-stone-950;
+      }
+
+      ion-item {
+        --min-height: auto;
+
+        &:hover {
+          i {
+            @apply text-blue-600 duration-500 ease-out dark:text-blue-400;
+          }
+        }
+
+        &::part(native) {
+          @apply rounded-xl !bg-transparent px-5 py-4;
+        }
+
+        i {
+          @apply text-xl duration-500 ease-out;
+        }
+      }
+    }
+  }
+
+  ion-item,
+  ion-label {
+    @apply font-iranyekan-regular text-white-950 dark:text-white-200 m-0;
+  }
+
+  i {
+    @apply flex;
+  }
+
+  ion-header {
+    ion-toolbar {
+      --border-width: 0 !important;
+    }
+  }
+
+  ion-button {
+    @apply m-0;
+  }
+
+  ion-tab-bar {
+    ion-tab-button {
+      --color-focused: var(--blue-400);
+      --color-selected: var(--blue-400);
+    }
+  }
+
+  ion-popover {
+    &::part(arrow)::after {
+      @apply bg-white-50 dark:bg-big-stone-950;
+    }
+
+    &::part(content) {
+      @apply rounded-xl border-0 bg-transparent;
+    }
+
+    ion-select-popover {
+      @apply bg-white-50 dark:bg-big-stone-950 p-3 drop-shadow-xl;
+
+      ion-list {
+        @apply !bg-transparent;
+
+        ion-item {
+          --border-color: transparent;
+
+          &::part(native) {
+            @apply bg-white-50 dark:bg-big-stone-950 rounded-lg border-0;
+          }
+
+          ion-radio {
+            @apply partMark:border-emerald-400 text-sm;
+          }
+
+          ion-checkbox {
+            @apply partContainer:h-4 partContainer:w-4 partContainer:border-[1px] text-sm;
+          }
+        }
+      }
+    }
+  }
+
+  ion-datetime {
+    @apply bg-white-100 dark:bg-big-stone-950 rounded-xl;
+
+    --wheel-highlight-background: rgba(0, 0, 0, 5%);
+    --background-rgb: rgba(0, 0, 0, 5%);
+
+    &::part(month-year-button) {
+      --color-hover: #2d7dff;
+      --color-activated: #2d7dff;
+      --color-focused: #2d7dff;
+      @apply text-white-950 dark:text-white-200;
+    }
+
+    &::part(calendar-day) {
+      @apply text-white-950 dark:text-white-200 text-sm;
+    }
+
+    &::part(calendar-day active) {
+      @apply bg-blue-500/20 font-bold !text-blue-500;
+    }
+
+    &::part(calendar-day today) {
+      @apply bg-emerald-400/20 font-bold !text-emerald-500;
+    }
+
+    &::part(wheel-item) {
+      @apply text-white-950 dark:text-white-200 text-sm;
+    }
+
+    &::part(wheel-item active) {
+      @apply font-bold !text-emerald-400;
+    }
+  }
+
+  ion-item {
+    &::part(month-year-button) {
+      @apply text-white-950 dark:text-white-200;
+    }
+  }
+
+  button::part(calendar-day) {
+    @apply text-white-950 dark:text-white-200;
+  }
+
+  ion-checkbox {
+    @apply partContainer:shadows partContainer:border-2 partContainer:border-blue-600 partContainer:bg-white-50 partMark:stroke-blue-600 partMark:stroke-2 dark:partContainer:bg-big-stone-950;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply shadow-sm duration-300 ease-in;
+
+    &::part(native) {
+      --background-hover: transparent;
+      --background-activated: transparent;
+      --background-focused: transparent;
+      @apply duration-300 ease-in;
+    }
+
+    &:hover {
+      @apply shadow-lg duration-300 ease-in;
+
+      &::part(native) {
+        @apply duration-300 ease-in;
+      }
+    }
+  }
+
+  .theme-btn {
+    @apply text-white-400 dark:text-white-200 min-h-auto w-auto rounded-xl text-sm shadow-none;
+
+    &::part(native) {
+      @apply min-h-auto w-7 bg-transparent p-0;
+    }
+
+    &:hover {
+      @apply text-orange-400 shadow-none;
+    }
+  }
+
+
+}
+
+.recharts-wrapper {
+  svg.recharts-surface {
+    @apply w-full;
+  }
+}
+
+ion-alert {
+  .alert-wrapper {
+    @apply bg-white-50 dark:bg-big-stone-950;
+
+    .alert-head {
+      h2 {
+        @apply font-iranyekan-bold text-white-950 dark:text-white-200 text-sm;
+      }
+    }
+
+    .alert-radio-group {
+      button {
+        @apply px-6 py-1;
+
+        .alert-radio-label {
+          @apply font-iranyekan-bold p-0;
+        }
+
+        &[aria-checked="false"] {
+          .alert-radio-label {
+            @apply text-white-950 dark:text-white-200;
+          }
+        }
+
+        &[aria-checked="true"] {
+          .alert-radio-label {
+            @apply text-emerald-400;
+          }
+
+          .alert-radio-icon .alert-radio-inner {
+            @apply border-emerald-400;
+          }
+        }
+      }
+    }
+
+    .alert-checkbox-group {
+      button {
+        &[aria-checked="true"] {
+          .alert-button-inner {
+            .alert-checkbox-icon {
+              @apply border-emerald-400 !bg-emerald-400;
+            }
+          }
+        }
+
+        .alert-button-inner {
+          .alert-checkbox-icon {
+            @apply bg-white-50 dark:bg-big-stone-950 h-5 w-5 border-[1px] border-blue-500;
+
+            .alert-checkbox-inner {
+              @apply top-[2px] right-[6px] left-[6px] h-3 w-[5px];
+            }
+          }
+
+          .alert-checkbox-label {
+            @apply font-iranyekan-regular text-white-950 dark:text-white-200 text-sm;
+          }
+        }
+      }
+    }
+
+    .alert-button-group {
+      button {
+        @apply h-auto py-3 text-sm;
+
+        &:not(.alert-button-role-cancel) {
+          @apply font-iranyekan-bold text-emerald-400;
+        }
+
+        &.alert-button-role-cancel {
+          @apply font-iranyekan-regular text-rose-400;
+        }
+      }
+    }
+  }
+}
+
+.notistack-MuiContent-error,
+.notistack-MuiContent-info,
+.notistack-MuiContent-warning,
+.notistack-MuiContent-success {
+  @apply bg-white-50 text-white-950 dark:bg-ebony-950 dark:text-white-200 flex justify-between gap-4 rounded-xl px-6 py-4;
+
+  #notistack-snackbar {
+    @apply flex items-center gap-2 p-0;
+  }
+
+  div:last-child {
+    @apply m-0 p-0;
+
+    button {
+      @apply transition-all;
+
+      &:hover {
+        @apply text-rose-400 transition-all;
+      }
+    }
+  }
+}
+
+.css-817hxt {
+  @apply bg-white-50 dark:bg-ebony-950 !border-0 drop-shadow-lg;
+
+  .css-joapi7 {
+    @apply bg-white-50 dark:bg-ebony-950 border-b-0;
+
+    button {
+      @apply text-blue-400;
+
+      &:hover,
+      &:focus {
+        @apply bg-white-100 dark:bg-big-stone-950;
+      }
+    }
+  }
+
+  .css-sp254y {
+    @apply m-2;
+
+    .css-1tniij6 {
+      @apply text-white-950/60 dark:text-white-200/40;
+    }
+  }
+
+  .css-7qlbje,
+  .css-1ngbwef,
+  .css-133ufif {
+    button {
+      @apply !text-white-950 dark:!text-white-200;
+
+      &:hover {
+        @apply border-white-950/30 dark:border-white-200/30;
+      }
+
+      &[data-selected="true"] {
+        @apply !text-white-50 bg-blue-600;
+      }
+    }
+  }
+}
+
+.ion-datetime-button-overlay {
+  &::part(content) {
+    @apply bg-white-100 dark:bg-big-stone-950 px-5 py-7 drop-shadow-xl;
+  }
+
+  .ion-page {
+    @apply bg-white-50 dark:bg-ebony-950 rounded-xl;
+  }
+}
+
+@utility shadows {
+  @apply shadow-sm duration-500 ease-in-out hover:shadow-md dark:shadow-lg dark:hover:shadow-2xl;
+}

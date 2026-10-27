@@ -8,10 +8,12 @@ i18next
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
+    ns: ["translations"],
     load: "languageOnly",
-    lng: "fa",
     fallbackLng: "fa",
-    defaultNS: "fa",
+    supportedLngs: ["fa", "en"],
+    detection: { order: ["localStorage"], caches: ["localStorage"] },
+    defaultNS: "translations",
     backend: {
       loadPath: "/locales/{{lng}}/translations.json",
     },

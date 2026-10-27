@@ -1,0 +1,41 @@
+/* One family lets native controls and Ionic inherit the correct font weight. */
+
+@font-face {
+  font-family: "iranyekan";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("@assets/fonts/IranYekan/woff/regular.woff") format("woff");
+}
+
+@font-face {
+  font-family: "iranyekan";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url("@assets/fonts/IranYekan/woff/medium.woff") format("woff");
+}
+
+@font-face {
+  font-family: "iranyekan";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url("@assets/fonts/IranYekan/woff/bold.woff") format("woff");
+}
+
+@font-face {
+  font-family: "iranyekan";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 800;
+  src: url("@assets/fonts/IranYekan/woff/extrabold.woff") format("woff");
+}
+
+@font-face {
+  font-family: "iranyekan";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 850;
+  src: url("@assets/fonts/IranYekan/woff/black.woff") format("woff");
+}

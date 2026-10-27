@@ -2,29 +2,28 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { enqueueSnackbar } from "notistack";
 import { useTranslation } from "react-i18next";
-import { useHistory, useLocation } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import { FieldErrors, SubmitHandler, useForm } from "react-hook-form";
 import { useEffect } from "react";
-import Input from "@components/Inputs";
-import { Button } from "@components/Buttons";
+import Input from "@components/Input";
+import { Button } from "@components/Button";
 import { IonSpinner, IonText } from "@ionic/react";
-import { PathNames } from "@constants/pathnames.const";
-import { nationalCodeRegex } from "@utils/regexPatterns";
+import { PathNames } from "@constants/pathnames";
 import {
-  PasswordValidation,
-  UsernameValidation,
-} from "@constants/form-schemas.const";
+  usePasswordValidation,
+  useUsernameValidation,
+} from "@hooks/useFormValidation";
 
 const Password = () => {
   type FormValues = z.infer<typeof FormSchema>;
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t, i18n } = useTranslation("translations");
-  const { search } = useLocation();
+  const { search, pathname } = useLocation();
   const params = new URLSearchParams(search);
   const username = params.get("username");
   const FormSchema = z.object({
-    username: UsernameValidation(),
-    password: PasswordValidation(),
+    username: useUsernameValidation(),
+    password: usePasswordValidation(),
   });
 
   const { register, handleSubmit, formState, reset, setValue } =
@@ -34,9 +33,10 @@ const Password = () => {
   const { errors, isSubmitting, isLoading, isSubmitSuccessful } = formState;
 
   useEffect(() => {
-    document.title = t("titles.login");
-    setValue("username", String(username));
-  }, []);
+    if (pathname === PathNames.Auth.LoginSecondStep) {
+      setValue("username", username ?? "");
+    }
+  }, [pathname, setValue, username]);
 
   useEffect(() => {
     if (isSubmitSuccessful) {
@@ -44,7 +44,7 @@ const Password = () => {
     }
   }, [isSubmitSuccessful, reset]);
 
-  const onSubmit: SubmitHandler<FormValues> = (res) => {
+  const onSubmit: SubmitHandler<FormValues> = () => {
     reset();
   };
 
@@ -85,7 +85,7 @@ const Password = () => {
       <div className="flex flex-wrap items-center justify-between">
         {/* back button */}
         <Button
-          onClick={() => history.push(PathNames.Auth.LoginFirstStep)}
+          onClick={() => navigate(PathNames.Auth.LoginFirstStep)}
           variant={"text-default"}
           size={"md"}
           round={"full"}

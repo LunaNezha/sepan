@@ -9,7 +9,7 @@ export type BorderRadiusProps = VariantProps<typeof BorderRadiusVariants>;
 export const BorderRadiusVariants = cva([], {
   variants: {
     BorderRadius: {
-      sm: ["rounded-sm"],
+      sm: ["rounded-xs"],
       md: ["rounded-md"],
       lg: ["rounded-lg"],
       xl: ["rounded-xl"],

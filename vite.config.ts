@@ -18,7 +18,8 @@ const sourceDirectories = [
   "utils",
 ];
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
+  base: mode === "production" ? "/sepan/" : "/",
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: Object.fromEntries(
@@ -56,4 +57,4 @@ export default defineConfig({
       },
     },
   },
-});
+}));
